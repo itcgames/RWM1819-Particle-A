@@ -1,0 +1,81 @@
+// Author: Michael Bridgette
+// Date: 02/11/2018
+// Particle System
+
+var canvas = document.querySelector('canvas');
+var ctx = canvas.getContext('2d');
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+// array to hold all our particle objects
+var particles = [];
+
+// Add one emitter located at `{ x : 100, y : 230}` from the origin (top left)
+// that emits at a velocity of `2` shooting out from the right (angle `0`)
+var emitters = [new Emitter(new Vector(100, 230), Vector.fromAngle(0, 2))];
+
+
+function loop() {
+  clear();
+  update();
+  draw();
+  queue();
+}
+
+function clear() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+}
+
+function update() {
+  addNewParticles();
+  plotParticles(canvas.width, canvas.height);
+}
+
+function draw() {
+  for( var i = 0; i< particles.length; i++)
+  {
+    particles[i].draw(ctx);
+  }
+}
+
+function queue() {
+  window.requestAnimationFrame(loop);
+}
+
+loop();
+
+var maxParticles = 20000;
+var emissionRate = 4;
+
+
+function addNewParticles(){
+
+  // if we're at our max, stop emitting.
+  if(particles.length > maxParticles) return;
+  // for each emitter
+  for(var i=0; i< emitters.length; i++){
+
+    // for [emissionRate], emit a particle
+    for(var j=0; j< emissionRate; j++){
+      particles.push(emitters[i].emitParticle());
+    }
+  }
+}
+
+
+function plotParticles(boundsX, boundsY){
+  var currentParticles= [];
+
+  for(var i=0; i< particles.length; i++){
+    var particle = particles[i];
+    var pos = particle.position;
+
+    if(pos.x<0|| pos.x> boundsX || pos.y<0 || pos.y > boundsY) continue;
+
+    particle.update();
+
+    currentParticles.push(particle);
+  }
+  particles = currentParticles;
+}
