@@ -13,8 +13,9 @@ var particles = [];
 
 // Add one emitter located at `{ x : 100, y : 230}` from the origin (top left)
 // that emits at a velocity of `2` shooting out from the right (angle `0`)
-var emitters = [new Emitter(new Vector(100, 230), Vector.fromAngle(0, 2))];
-
+var emitters = [new Emitter(new Vector(850, 630), Vector.fromAngle(-1.5, 1), 0.7,'rgb(0,255,0)'), new Emitter(new Vector(850, 630), Vector.fromAngle(-1.5, 1), 0.7,'rgb(255,0,0)'),
+new Emitter(new Vector(850, 630), Vector.fromAngle(-1.5, 1), 0.7, 0.7 ,'rgb(0,0,255)'), new Emitter(new Vector(850, 630), Vector.fromAngle(-1.5, 1), 0.7 ,'rgb(255,255,0)')];
+var fields = [new Field(new Vector(850, 470), 900), new Field(new Vector(850,570), -100)];
 
 function loop() {
   clear();
@@ -30,12 +31,18 @@ function clear() {
 function update() {
   addNewParticles();
   plotParticles(canvas.width, canvas.height);
+
+
 }
 
 function draw() {
   for( var i = 0; i< particles.length; i++)
   {
     particles[i].draw(ctx);
+  }
+  for(var i =0; i< fields.length; i++)
+  {
+    fields[i].draw(ctx);
   }
 }
 
@@ -45,8 +52,8 @@ function queue() {
 
 loop();
 
-var maxParticles = 20000;
-var emissionRate = 4;
+var maxParticles = 10000;
+var emissionRate = 5;
 
 
 function addNewParticles(){
@@ -72,6 +79,8 @@ function plotParticles(boundsX, boundsY){
     var pos = particle.position;
 
     if(pos.x<0|| pos.x> boundsX || pos.y<0 || pos.y > boundsY) continue;
+
+    particle.handleFields(fields);
 
     particle.update();
 
