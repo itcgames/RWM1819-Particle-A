@@ -2,16 +2,26 @@
 // Date: 02/11/2018
 // Particle System
 
-function Particle(point, velocity, acceleration, color){
+function Particle(point, velocity, acceleration, color, life){
   this.position = point || new Vector(0,0);
   this.velocity = velocity || new Vector(0,0);
   this.acceleration = acceleration || new Vector(0,0);
   this.color= color;
+  this.lifeTime = life * 60;
+  this.timer =0;
+  this.alive = true;
 }
 
 Particle.prototype.update = function() {
   this.velocity.add(this.acceleration);
   this.position.add(this.velocity);
+
+  this.timer +=1;
+  if(this.timer >= this.lifeTime)
+  {
+    this.alive = false;
+    //console.log("die");
+  }
 }
 
 Particle.prototype.draw = function(ctx){

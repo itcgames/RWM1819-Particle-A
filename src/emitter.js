@@ -12,8 +12,13 @@ function Emitter(point, velocity, spread, color){
   this.particles = [];
   this.maxParticles = 25000;
   this.emissionRate = 5;
+
+  this.particleLifeTime = 5;
 }
 
+Emitter.prototype.setParticlesLifeTime = function(num){
+  this.particleLifeTime = num;
+}
 
 Emitter.prototype.setMaxParticles = function(num){
   this.maxParticles = num;
@@ -35,7 +40,7 @@ Emitter.prototype.emitParticle = function(){
 
   var velocity = Vector.fromAngle(angle, magnitude);
 
-  return new Particle(position, velocity,new Vector(0,0),this.color);
+  return new Particle(position, velocity,new Vector(0,0),this.color, this.particleLifeTime);
 }
 
 Emitter.prototype.setPos = function(x,y){
@@ -58,8 +63,11 @@ Emitter.prototype.plotParticles = function(boundsX, boundsY, fields){
   for(var i=0; i< this.particles.length; i++){
     var particle = this.particles[i];
     var pos = particle.position;
+    var alive = particle.alive;
 
     if(pos.x<0|| pos.x> boundsX || pos.y<0 || pos.y > boundsY) continue;
+
+    if(alive == false) continue;
 
     if(fields != undefined)
     {

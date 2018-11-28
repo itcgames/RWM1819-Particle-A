@@ -17,6 +17,11 @@ var emitters = [new Emitter(new Vector(800, 530), Vector.fromAngle(-1.5, 1), 10 
     ];
 
 
+for (var i =0; i<emitters.length; i++)
+{
+  emitters[i].setParticlesLifeTime(1);
+}
+
 function loop() {
   clear();
   update();
