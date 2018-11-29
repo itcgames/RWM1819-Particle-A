@@ -26,7 +26,7 @@ Emitter.prototype.setMaxParticles = function(num){
 }
 Emitter.prototype.setEmissionRate = function(num){
   this.emissionRate = num;
-  console.log("Emission Rate: ",this.emissionRate);
+  //console.log("Emission Rate: ",this.emissionRate);
 }
 
 
