@@ -40,7 +40,9 @@ Emitter.prototype.emitParticle = function(){
 
   var velocity = Vector.fromAngle(angle, magnitude);
 
-  return new Particle(position, velocity,new Vector(0,0),this.color, this.particleLifeTime);
+  var ttl = Math.max(this.particleLifeTime * (Math.random() * 2) - 1, 0);
+
+  return new Particle(position, velocity,new Vector(0,0),this.color, ttl);
 }
 
 Emitter.prototype.setPos = function(x,y){
