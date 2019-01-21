@@ -14,6 +14,31 @@ function Emitter(point, velocity, spread, color){
   this.emissionRate = 5;
 
   this.particleLifeTime = 5;
+
+  this.useImg = false;
+  this.imageSrc = "";
+  this.imageWidth;
+  this.imageHeight;
+
+  this.useGravity = false;
+
+}
+
+Emitter.prototype.getAmountOfParticles = function()
+{
+  return this.particles.length;
+}
+
+Emitter.prototype.applyGravity= function()
+{
+  this.useGravity = true;
+}
+
+Emitter.prototype.useImage = function(src, width, height){
+  this.useImg = true;
+  this.imageSrc = src;
+  this.imageWidth= width;
+  this.imageHeight= height;
 }
 
 Emitter.prototype.setParticlesLifeTime = function(num){
@@ -42,7 +67,16 @@ Emitter.prototype.emitParticle = function(){
 
   var ttl = Math.max(this.particleLifeTime * (Math.random() * 2) - 1, 0);
 
+if(this.useImg == false)
+{
   return new Particle(position, velocity,new Vector(0,0),this.color, ttl);
+}
+else {
+  var part = new Particle(position, velocity,new Vector(0,0),this.color, ttl);
+  part.useImage(this.imageSrc, this.imageWidth, this.imageHeight);
+  return part;
+}
+
 }
 
 Emitter.prototype.setPos = function(x,y){
@@ -76,6 +110,10 @@ Emitter.prototype.plotParticles = function(boundsX, boundsY, fields){
       particle.handleFields(fields);
     }
 
+    if(this.useGravity == true)
+    {
+      particle.applyGravity();
+    }
 
     particle.update();
 

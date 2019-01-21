@@ -8,9 +8,33 @@ function Particle(point, velocity, acceleration, color, life){
   this.acceleration = acceleration || new Vector(0,0);
   this.color= color;
   this.lifeTime = life * 60;
-  this.timer =0;
+  this.timer = 0;
   this.alive = true;
+
+
+
+  this.useImg = false;
+  this.imgSrc ="";
+  this.img;
+  this.imgWidth;
+  this.imgHeight;
+
+  this.gravity = 0.05;
+  this.gravitySpeed = 0;
 }
+
+Particle.prototype.useImage = function (src, width, height) {
+  this.useImg = true;
+  this.imgSrc= src;
+
+  this.img = new Image();
+  this.img.src = this.imgSrc;
+
+  this.imgWidth = width;
+  this.imgHeight = height;
+};
+
+
 
 Particle.prototype.update = function() {
   this.velocity.add(this.acceleration);
@@ -25,8 +49,21 @@ Particle.prototype.update = function() {
 }
 
 Particle.prototype.draw = function(ctx){
-  ctx.fillStyle = this.color;
-  ctx.fillRect(this.position.x, this.position.y, 1,1);
+  if(this.useImg == false)
+  {
+    ctx.fillStyle = this.color;
+    ctx.fillRect(this.position.x, this.position.y, 1,1);
+  }
+  else
+  {
+    ctx.drawImage(this.img, this.position.x, this.position.y, this.imgWidth, this.imgHeight);
+  }
+
+}
+
+Particle.prototype.applyGravity = function(){
+  this.gravitySpeed += this.gravity;
+  this.position.y += this.gravitySpeed;
 }
 
 Particle.prototype.handleFields= function(fields){
