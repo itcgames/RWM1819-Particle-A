@@ -56,7 +56,12 @@ Particle.prototype.draw = function(ctx){
   }
   else
   {
+    ctx.save();
+    ctx.translate(this.position.x + (this.width / 2.0), this.position.x + (this.height / 2.0));
+    //ctx.rotate(this.angle);
+    ctx.translate((this.positionX + (this.width / 2)) * -1, (this.positionY + (this.height / 2)) * -1);
     ctx.drawImage(this.img, this.position.x, this.position.y, this.imgWidth, this.imgHeight);
+    ctx.restore();
   }
 
 }
