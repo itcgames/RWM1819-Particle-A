@@ -2,7 +2,7 @@
 // Date: 02/11/2018
 // Particle System
 
-function Particle(point, velocity, acceleration, color, life){
+function Particle(point, velocity, acceleration, color, life, shape){
   this.position = point || new Vector(0,0);
   this.velocity = velocity || new Vector(0,0);
   this.acceleration = acceleration || new Vector(0,0);
@@ -21,6 +21,21 @@ function Particle(point, velocity, acceleration, color, life){
 
   this.gravity = 0.05;
   this.gravitySpeed = 0;
+
+  this.useCircle = false;
+  this.width = 1;
+  this.height = 1;
+}
+
+Particle.prototype.updateSize = function(width, height)
+{
+  this.width = width;
+  this.height = height;
+}
+
+Particle.prototype.useACircle = function()
+{
+  this.useCircle = true;
 }
 
 Particle.prototype.useImage = function (src, width, height) {
@@ -51,8 +66,16 @@ Particle.prototype.update = function() {
 Particle.prototype.draw = function(ctx){
   if(this.useImg == false)
   {
-    ctx.fillStyle = this.color;
-    ctx.fillRect(this.position.x, this.position.y, 1,1);
+    if(this.useCircle !== true) {
+      ctx.fillStyle = this.color;
+      ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
+    }
+    else {
+      ctx.beginPath();
+      ctx.arc(this.position.x, this.position.y, this.width, 0, 2 * Math.PI);
+      ctx.strokeStyle = this.color;
+      ctx.stroke();
+    }
   }
   else
   {

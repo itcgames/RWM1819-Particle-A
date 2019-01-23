@@ -22,8 +22,20 @@ function Emitter(point, velocity, spread, color){
 
   this.useGravity = false;
 
+  this.useCircle = false;
+  this.width=1;
+  this.height=1;
 }
 
+Emitter.prototype.useACircle = function()
+{
+  this.useCircle = true;
+}
+Emitter.prototype.updateSize = function(width, height)
+{
+  this.width =  width;
+  this.height = height;
+}
 Emitter.prototype.getAmountOfParticles = function()
 {
   return this.particles.length;
@@ -69,7 +81,18 @@ Emitter.prototype.emitParticle = function(){
 
 if(this.useImg == false)
 {
-  return new Particle(position, velocity,new Vector(0,0),this.color, ttl);
+  var part = new Particle(position, velocity,new Vector(0,0),this.color, ttl);
+
+  if(this.useCircle === true)
+  {
+    part.useACircle();
+    part.updateSize(this.width, this.height);
+    return part;
+  }
+  else {
+    part.updateSize(this.width, this.height);
+    return part;
+  }
 }
 else {
   var part = new Particle(position, velocity,new Vector(0,0),this.color, ttl);
