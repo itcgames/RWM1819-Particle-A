@@ -59,7 +59,7 @@ Emitter.prototype.setParticlesLifeTime = function(num){
 
 Emitter.prototype.setMaxParticles = function(num){
   this.maxParticles = num;
-  console.log("Max Particles: ",this.maxParticles);
+  //console.log("Max Particles: ",this.maxParticles);
 }
 Emitter.prototype.setEmissionRate = function(num){
   this.emissionRate = num;
