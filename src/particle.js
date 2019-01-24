@@ -25,6 +25,8 @@ function Particle(point, velocity, acceleration, color, life, shape){
   this.useCircle = false;
   this.width = 1;
   this.height = 1;
+
+  this.useTriangle = false;
 }
 
 Particle.prototype.updateSize = function(width, height)
@@ -36,7 +38,13 @@ Particle.prototype.updateSize = function(width, height)
 Particle.prototype.useACircle = function()
 {
   this.useCircle = true;
+  this.useTriangle = false;
 }
+Particle.prototype.useATriangle = function ()
+{
+  this.useTriangle = true;
+  this.useCircle = false;
+};
 
 Particle.prototype.useImage = function (src, width, height) {
   this.useImg = true;
@@ -66,18 +74,28 @@ Particle.prototype.update = function() {
 Particle.prototype.draw = function(ctx){
   if(this.useImg == false)
   {
-    if(this.useCircle !== true) {
+    if(this.useTriangle === true)
+    {
+      ctx.beginPath();
+      ctx.moveTo(this.position.x, this.position.y);
+      ctx.lineTo(this.position.x + this.width, this.position.y + (-this.height));
+      ctx.lineTo(this.position.x + this.width * 2, this.position.y);
+      ctx.fillStyle = this.color;
+      ctx.fill();
+    }
+
+    else if(this.useCircle !== true && this.useTriangle !== true && this.useImg !== true) {
       ctx.fillStyle = this.color;
       ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
     }
-    else {
+    else if(this.useCircle === true){
       ctx.beginPath();
       ctx.arc(this.position.x, this.position.y, this.width, 0, 2 * Math.PI);
       ctx.strokeStyle = this.color;
       ctx.stroke();
     }
   }
-  else
+  else if(this.useImg === true)
   {
     ctx.save();
     ctx.drawImage(this.img, this.position.x - (this.imgWidth/2), this.position.y - (this.imgHeight/2), this.imgWidth, this.imgHeight);

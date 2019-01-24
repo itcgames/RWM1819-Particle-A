@@ -25,11 +25,17 @@ function Emitter(point, velocity, spread, color){
   this.useCircle = false;
   this.width=1;
   this.height=1;
+  this.useTriangle = false;
 }
-
+Emitter.prototype.useATriangle = function()
+{
+  this.useTriangle = true;
+  this.useCircle = false;
+}
 Emitter.prototype.useACircle = function()
 {
   this.useCircle = true;
+  this.useTriangle = false;
 }
 Emitter.prototype.updateSize = function(width, height)
 {
@@ -48,6 +54,8 @@ Emitter.prototype.applyGravity= function()
 
 Emitter.prototype.useImage = function(src, width, height){
   this.useImg = true;
+  this.useTriangle = false;
+  this.useCircle = false;
   this.imageSrc = src;
   this.imageWidth= width;
   this.imageHeight= height;
@@ -82,19 +90,23 @@ Emitter.prototype.emitParticle = function(){
 if(this.useImg == false)
 {
   var part = new Particle(position, velocity,new Vector(0,0),this.color, ttl);
-
   if(this.useCircle === true)
   {
     part.useACircle();
     part.updateSize(this.width, this.height);
     return part;
   }
-  else {
+  else if(this.useTriangle === true){
+    part.useATriangle();
+    part.updateSize(this.width, this.height);
+    return part;
+  }
+  else if (this.useCircle === false && this.useTriangle === false) {
     part.updateSize(this.width, this.height);
     return part;
   }
 }
-else {
+else if(this.useImg === true) {
   var part = new Particle(position, velocity,new Vector(0,0),this.color, ttl);
   part.useImage(this.imageSrc, this.imageWidth, this.imageHeight);
   return part;
