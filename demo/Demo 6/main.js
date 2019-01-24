@@ -24,6 +24,7 @@ for (var i =0; i<emitters.length; i++)
 }
 
 emitters[2].updateSize(10,10);
+
 function loop() {
   clear();
   update();

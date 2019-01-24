@@ -26,6 +26,9 @@ function Emitter(point, velocity, spread, color){
   this.width=1;
   this.height=1;
   this.useTriangle = false;
+
+
+  this.emitterLifeTime=0;
 }
 Emitter.prototype.useATriangle = function()
 {
@@ -77,6 +80,7 @@ Emitter.prototype.setEmissionRate = function(num){
 
 //emit particle from the emitter.
 Emitter.prototype.emitParticle = function(){
+
   var angle = this.velocity.getAngle() + this.spread - (Math.random() * this.spread * 2);
 
   var magnitude = this.velocity.getMagnitude();
@@ -120,6 +124,7 @@ Emitter.prototype.setPos = function(x,y){
 }
 
 Emitter.prototype.addNewParticles = function(){
+  this.emitterLifeTime +=1;
   // if we're at our max, stop emitting.
   if(this.particles.length > this.maxParticles) return;
 
